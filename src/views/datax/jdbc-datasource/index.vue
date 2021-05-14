@@ -232,6 +232,7 @@ export default {
       dataSources: [
         { value: 'MYSQL', label: 'MYSQL' },
         { value: 'ORACLE', label: 'ORACLE' },
+        { value: 'DM', label: 'DM' },
         { value: 'POSTGRESQL', label: 'POSTGRESQL' },
         { value: 'GREENPLUM', label: 'GREENPLUM' },
         { value: 'SQLSERVER', label: 'SQLSERVER' },
@@ -268,6 +269,8 @@ export default {
         this.temp.connectionParams.jdbcUrl = 'jdbc:hive2://{host}:{port}'
       } else if (type === 'DB2') {
         this.temp.connectionParams.jdbcUrl = 'jdbc:db2://{host}[:{port}]'
+      } else if (type === 'DM') {
+        this.temp.connectionParams.jdbcUrl = 'jdbc:dm://{host}:{port}'
       }
       this.getShowStrategy(type)
     },
@@ -318,7 +321,7 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Created Successfully',
+              message: '创建数据源成功',
               type: 'success',
               duration: 2000
             })
@@ -345,7 +348,7 @@ export default {
             } else {
               this.$notify({
                 title: 'Success',
-                message: 'Tested Successfully',
+                message: '测试连接数据库成功',
                 type: 'success',
                 duration: 2000
               })
@@ -379,7 +382,7 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Update Successfully',
+              message: '更改数据源成功',
               type: 'success',
               duration: 2000
             })
@@ -407,7 +410,7 @@ export default {
         this.fetchData()
         this.$notify({
           title: 'Success',
-          message: 'Delete Successfully',
+          message: '删除数据源成功',
           type: 'success',
           duration: 2000
         })
