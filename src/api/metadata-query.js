@@ -54,3 +54,12 @@ export function updateColumnsValue(query) {
     data: query
   })
 }
+
+// 根据schema、table 获取表的主键字段
+export function getTablePrimaryKeys(params) {
+  return request({
+    url: '/api/metadata/getTablePrimaryKeys',
+    method: 'get',
+    params
+  })
+}

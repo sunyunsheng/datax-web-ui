@@ -55,11 +55,26 @@
           <el-checkbox v-for="c in fromColumnList" :key="c" :label="c">{{ c }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="前置sql语句：">
+      <el-form-item label="预处理sql语句：">
         <el-input v-model="writerForm.preSql" placeholder="前置sql在insert之前执行" type="textarea" style="width: 42%" />
       </el-form-item>
-      <el-form-item label="postSql">
+      <el-form-item label="后处理sql语句">
         <el-input v-model="writerForm.postSql" placeholder="多个用;分隔" type="textarea" style="width: 42%" />
+      </el-form-item>
+      <el-form-item label="写模式">
+        <el-select
+          v-model="writerForm.writeMode"
+          filterable
+          style="width: 300px;"
+          @change="wmChange"
+        >
+          <el-option
+            v-for="item in wmList"
+            :key="item.id"
+            :label="item.datasourceName"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
     </el-form>
   </div>
@@ -86,6 +101,8 @@ export default {
       dataSource: '',
       needSchema: false,
       createTableName: '',
+      writeMode: '', //写模式
+      tablePKs: [],//表主键字段
       writerForm: {
         datasourceId: undefined,
         tableName: '',
@@ -95,13 +112,15 @@ export default {
         preSql: '',
         postSql: '',
         ifCreateTable: false,
-        tableSchema: ''
+        tableSchema: '',
+        writeMode: ''
       },
       readerForm: this.getReaderData(),
       rules: {
         datasourceId: [{ required: true, message: 'this is required', trigger: 'change' }],
         tableName: [{ required: true, message: 'this is required', trigger: 'change' }],
-        tableSchema: [{ required: true, message: 'this is required', trigger: 'change' }]
+        tableSchema: [{ required: true, message: 'this is required', trigger: 'change' }],
+        writeMode: [{ required: true, message: 'this is required', trigger: 'change' }]
       }
     }
   },
@@ -115,7 +134,22 @@ export default {
         this.getTables('rdbmsWriter')
         this.needSchema = false
       }
+    },
+    /**
+     * 增加对写模式值变化的事件监听，如果为update时，且数据源类型为 oracle或dm时，需要获取当前表的主键，判断是否存在主键，
+     * 如果不存在主键 不允许设置该模式，或提醒先进行对表设置主键或选用insert模式
+     * 2021-05-17 sunyunsheng
+     */
+    'writerForm.writeMode': function(oldVal, newVal) {
+      if(this.writeMode === 'update' && (this.dataSource === 'ORACLE' || this.dataSource === 'DM'))
+      {
+        this.getTablePrimaryKey()   //在此处获取所选的表的主键字段
+
+      }
+
+
     }
+
   },
   created() {
     this.getJdbcDs()
@@ -157,6 +191,20 @@ export default {
           this.wTbList = response
         })
       }
+    },
+
+    /**
+     * 获取表的主键字段
+     */
+    getTablePrimaryKey() {
+      const obj = {
+        datasourceId: this.writerForm.datasourceId,
+        schema: this.writerForm.tableSchema,
+        tableName: this.writerForm.tableName
+      }
+      dsQueryApi.getTablePrimaryKey(obj).then(response => {
+        this.tablePKs = response
+      })
     },
     getSchema() {
       const obj = {
