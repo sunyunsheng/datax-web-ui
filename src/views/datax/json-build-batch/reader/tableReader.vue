@@ -99,7 +99,6 @@ export default {
       jdbcDsList(this.jdbcDsQuery).then(response => {
         const { records } = response
         this.rDsList = records
-        console.log(this.rDsList[0].type)
         this.dataSource = this.rDsList[0].type
         this.readerForm.datasourceId = this.rDsList[0].id
         if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource === 'DM') {

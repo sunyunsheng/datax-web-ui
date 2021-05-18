@@ -149,8 +149,6 @@ export default {
      * 2021-05-17 sunyunsheng
      */
     'writerForm.writeModeType': function(oldVal, newVal) {
-      console.log(this.writeModeType)
-      console.log(this.dataSource)
       if (this.writeModeType === 'update' && (this.dataSource === 'ORACLE' || this.dataSource === 'DM')) {
         // 在此处获取所选的表的主键字段
         this.getTablePrimaryKey()
