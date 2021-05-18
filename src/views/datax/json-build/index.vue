@@ -215,6 +215,8 @@ export default {
       const readerColumns = this.$refs.mapper.getLColumns()
       const writerColumns = this.$refs.mapper.getRColumns()
       const transformer = this.$refs.mapper.getRules()
+
+      console.log(writeData)
       const hiveReader = {
         readerPath: readerData.path,
         readerDefaultFS: readerData.defaultFS,
@@ -252,7 +254,8 @@ export default {
       }
       const rdbmsWriter = {
         preSql: writeData.preSql,
-        postSql: writeData.postSql
+        postSql: writeData.postSql,
+        writeMode: writeData.writeMode
       }
       const obj = {
         readerDatasourceId: readerData.datasourceId,

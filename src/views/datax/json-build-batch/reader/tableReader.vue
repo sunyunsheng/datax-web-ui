@@ -63,7 +63,7 @@ export default {
       customType: '',
       customValue: '',
       dataSource: '',
-      needSchema:false,
+      needSchema: false,
       readerForm: {
         datasourceId: undefined,
         tables: [],
@@ -80,7 +80,7 @@ export default {
   },
   watch: {
     'readerForm.datasourceId': function(oldVal, newVal) {
-      if (this.dataSource === 'postgresql' || this.dataSource === 'greenplum' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver' || this.dataSource === 'db2') {
+      if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'GREENPLUM' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource === 'DM') {
         this.getSchema()
         this.needSchema = true
       } else {
@@ -99,9 +99,10 @@ export default {
       jdbcDsList(this.jdbcDsQuery).then(response => {
         const { records } = response
         this.rDsList = records
-        this.dataSource = this.rDsList[0].datasource
+        console.log(this.rDsList[0].type)
+        this.dataSource = this.rDsList[0].type
         this.readerForm.datasourceId = this.rDsList[0].id
-        if (this.dataSource === 'postgresql' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver' || this.dataSource === 'db2'){
+        if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource === 'DM') {
           this.needSchema = true
         } else {
           this.needSchema = false
@@ -152,7 +153,7 @@ export default {
       this.readerForm.datasourceId = e
       this.rDsList.find((item) => {
         if (item.id === e) {
-          this.dataSource = item.datasource
+          this.dataSource = item.type
         }
       })
       Bus.dataSourceId = e

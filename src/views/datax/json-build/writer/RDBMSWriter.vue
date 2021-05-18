@@ -61,21 +61,24 @@
       <el-form-item label="后处理sql语句">
         <el-input v-model="writerForm.postSql" placeholder="多个用;分隔" type="textarea" style="width: 42%" />
       </el-form-item>
-      <el-form-item label="写模式">
+      <el-form-item label="写入模式" prop="writeModeType">
         <el-select
-          v-model="writerForm.writeMode"
+          v-model="writerForm.writeModeType"
           filterable
           style="width: 300px;"
           @change="wmChange"
+
         >
           <el-option
             v-for="item in wmList"
-            :key="item.id"
-            :label="item.datasourceName"
-            :value="item.id"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           />
         </el-select>
+        <el-input v-model="writerForm.writeMode" placeholder="writeMode" style="width: 13%" prop="writeMode"  disabled/>
       </el-form-item>
+
     </el-form>
   </div>
 </template>
@@ -94,6 +97,10 @@ export default {
         ascs: 'datasource_name'
       },
       wDsList: [],
+      wmList: [
+        { value: 'insert', label: 'insert' },
+        { value: 'update', label: 'update' }
+      ],
       schemaList: [],
       fromTableName: '',
       fromColumnList: [],
@@ -101,8 +108,8 @@ export default {
       dataSource: '',
       needSchema: false,
       createTableName: '',
-      writeMode: '', //写模式
-      tablePKs: [],//表主键字段
+      writeMode: '', // 写模式
+      tablePKs: [], // 表主键字段
       writerForm: {
         datasourceId: undefined,
         tableName: '',
@@ -113,21 +120,22 @@ export default {
         postSql: '',
         ifCreateTable: false,
         tableSchema: '',
-        writeMode: ''
+        writeMode: '',
+        writeModeType: ''
       },
       readerForm: this.getReaderData(),
       rules: {
         datasourceId: [{ required: true, message: 'this is required', trigger: 'change' }],
         tableName: [{ required: true, message: 'this is required', trigger: 'change' }],
         tableSchema: [{ required: true, message: 'this is required', trigger: 'change' }],
-        writeMode: [{ required: true, message: 'this is required', trigger: 'change' }]
+        writeModeType: [{ required: true, message: 'this is required', trigger: 'change' }]
       }
     }
   },
   watch: {
     'writerForm.datasourceId': function(oldVal, newVal) {
       // 当需要选择schemas时，先选择schemas再加载表
-      if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'GREENPLUM' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource==='DM') {
+      if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'GREENPLUM' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource === 'DM') {
         this.getSchema()
         this.needSchema = true
       } else {
@@ -140,19 +148,21 @@ export default {
      * 如果不存在主键 不允许设置该模式，或提醒先进行对表设置主键或选用insert模式
      * 2021-05-17 sunyunsheng
      */
-    'writerForm.writeMode': function(oldVal, newVal) {
-      if(this.writeMode === 'update' && (this.dataSource === 'ORACLE' || this.dataSource === 'DM'))
-      {
-        this.getTablePrimaryKey()   //在此处获取所选的表的主键字段
-
+    'writerForm.writeModeType': function(oldVal, newVal) {
+      console.log(this.writeModeType)
+      console.log(this.dataSource)
+      if (this.writeModeType === 'update' && (this.dataSource === 'ORACLE' || this.dataSource === 'DM')) {
+        // 在此处获取所选的表的主键字段
+        this.getTablePrimaryKey()
+      } else {
+        this.writerForm.writeMode = this.writeModeType
       }
-
-
     }
 
   },
   created() {
     this.getJdbcDs()
+    this.writeModeType = this.wmList[0].value
   },
   methods: {
     // 获取可用数据源
@@ -161,7 +171,7 @@ export default {
       jdbcDsList(this.jdbcDsQuery).then(response => {
         const { records } = response
         this.wDsList = records
-        //this.wDsList.push({ id: -1, datasourceName: 'TXT文件', datasource: 'txtfile' })
+        // this.wDsList.push({ id: -1, datasourceName: 'TXT文件', datasource: 'txtfile' })
         this.dataSource = this.wDsList[0].type
         this.writerForm.datasourceId = this.wDsList[0].id
         if (this.dataSource === 'POSTGRESQL' || this.dataSource === 'GREENPLUM' || this.dataSource === 'ORACLE' || this.dataSource === 'SQLSERVER' || this.dataSource === 'DB2' || this.dataSource === 'DM') {
@@ -197,14 +207,29 @@ export default {
      * 获取表的主键字段
      */
     getTablePrimaryKey() {
+      this.loading = true
       const obj = {
         datasourceId: this.writerForm.datasourceId,
         schema: this.writerForm.tableSchema,
-        tableName: this.writerForm.tableName
+        tableName: this.writerForm.tableName ? this.writerForm.tableName.substr(this.writerForm.tableName.indexOf('.') + 1) : ''
       }
-      dsQueryApi.getTablePrimaryKey(obj).then(response => {
-        this.tablePKs = response
+      dsQueryApi.getTablePrimaryKeys(obj).then(response => {
+        if (response.length === 0) {
+          this.$confirm('【' + this.writerForm.tableName + '】 表没有设置主键，不允许使用UPDATE的写入模式，请为该表设置主键或使用INSERT的写入模式！', '系统提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            type: 'warning'
+          }).then(() => {
+            this.writeModeType = this.wmList[0].value
+            this.loading = false
+          })
+        } else {
+          this.writerForm.writeMode = this.writeModeType + ' (' + response.join(',').toLocaleUpperCase() + ')'
+          this.loading = false
+        }
+        // this.tablePKs = response
       })
+      this.loading = false
     },
     getSchema() {
       const obj = {
@@ -235,6 +260,10 @@ export default {
       // 切换数据源时，清空可用表列表，当需要选择schemas时，先选择schemas再加载表
       this.writerForm.tableSchema = ''
       this.wTbList = []
+    },
+
+    wmChange(e) {
+      this.writeModeType = e
     },
     // 获取表字段
     getColumns() {
