@@ -25,10 +25,11 @@
       border
       fit
       highlight-current-row
-      style="width: 100%"
+      style="width: 100%;"
       size="medium"
+      :cell-style="cellStyle"
     >
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="ID" width="80" style="background-color: #3d90d0">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
       <el-table-column label="任务名称" align="center">
@@ -37,7 +38,7 @@
       <el-table-column label="所属项目" align="center" width="120">
         <template slot-scope="scope">{{ scope.row.projectName }}</template>
       </el-table-column>
-      <el-table-column label="Cron" align="center" width="120">
+      <el-table-column label="Cron" align="center" width="130">
         <template slot-scope="scope">
           <span>{{ scope.row.jobCron }}</span>
         </template>
@@ -87,10 +88,13 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="执行状态" align="center" width="80">
+      <el-table-column label="执行状态" align="center" width="80" style="color: white">
         <template slot-scope="scope"> {{ statusList.find(t => t.value === scope.row.lastHandleCode).label }}</template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column label="最后一次调度成功时间" align="center" width="165">
+        <template slot-scope="scope">{{ scope.row.lastSuccessTriggerTime }}</template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" fixed="right" width="150">
         <template slot-scope="{row}">
           <!-- <el-dropdown type="primary" size="small"> -->
           <!-- 操作 -->
@@ -285,7 +289,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-
+          <el-col :span="12">
+            <el-form-item label="最后调度成功时间" prop="lastSuccessTriggerTime">
+              <el-input v-model="temp.lastSuccessTriggerTime" placeholder="最后一次调度成功时间" disabled/>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row v-if="temp.glueType==='DATAX' && temp.incrementType === 3" :gutter="20">
           <el-col :span="12">
@@ -563,6 +571,15 @@ export default {
   },
 
   methods: {
+    cellStyle(row, column, rowIndex, columnIndex) {
+      if (row.column.label === '执行状态' && (row.row.lastHandleCode === 500 || row.row.lastHandleCode === 502)) {
+        return 'background:red;color: white'
+      } else if (row.column.label === '执行状态' && row.row.lastHandleCode === 200) {
+        return 'background:green;color: white'
+      } else if (row.column.label === '执行状态' && row.row.lastHandleCode === 0) {
+        return 'background:yellow;color: black'
+      }
+    },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
