@@ -111,7 +111,7 @@ export default {
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6个字符'))
       } else {
         callback()
       }
@@ -135,8 +135,8 @@ export default {
         create: 'Create'
       },
       rules: {
-        role: [{ required: true, message: 'role is required', trigger: 'change' }],
-        username: [{ required: true, message: 'username is required', trigger: 'blur' }],
+        role: [{ required: true, message: '角色必填', trigger: 'change' }],
+        username: [{ required: true, message: '用户名必填', trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       temp: {
@@ -179,8 +179,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '系统提示',
+              message: '创建用户成功',
               type: 'success',
               duration: 2000
             })
@@ -204,8 +204,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '系统提示',
+              message: '修改用户成功',
               type: 'success',
               duration: 2000
             })
@@ -217,8 +217,8 @@ export default {
       user.deleteUser(row.id).then(response => {
         this.fetchData()
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
+          title: '系统提示',
+          message: '删除用户成功',
           type: 'success',
           duration: 2000
         })

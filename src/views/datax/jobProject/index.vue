@@ -128,8 +128,8 @@ export default {
         create: 'Create'
       },
       rules: {
-        name: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        description: [{ required: true, message: 'this is required', trigger: 'blur' }]
+        name: [{ required: true, message: '项目名称必填', trigger: 'blur' }],
+        description: [{ required: true, message: '项目描述必填', trigger: 'blur' }]
       },
       temp: {
         id: undefined,
@@ -175,8 +175,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '系统提示',
+              message: '创建项目成功',
               type: 'success',
               duration: 2000
             })
@@ -200,8 +200,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '系统提示',
+              message: '修改项目成功',
               type: 'success',
               duration: 2000
             })
@@ -216,8 +216,8 @@ export default {
       jobProjectApi.deleted({ idList: row.id }).then(response => {
         this.fetchData()
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
+          title: '系统提示',
+          message: '删除项目成功',
           type: 'success',
           duration: 2000
         })

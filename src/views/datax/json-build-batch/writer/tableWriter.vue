@@ -180,8 +180,8 @@ export default {
       }
       dsQueryApi.createTable(obj).then(response => {
         this.$notify({
-          title: 'Success',
-          message: 'Create Table Successfully',
+          title: '系统提示',
+          message: '创建表成功',
           type: 'success',
           duration: 2000
         })

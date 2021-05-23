@@ -170,8 +170,8 @@ export default {
       // 调api
       job.batchAddJob(obj).then(response => {
         this.$notify({
-          title: 'Success',
-          message: 'Created Successfully',
+          title: '系统提示',
+          message: '创建成功',
           type: 'success',
           duration: 2000
         })
@@ -182,7 +182,7 @@ export default {
     handleCopy(text, event) {
       clip(this.configJson, event)
       this.$message({
-        message: 'copy success',
+        message: '复制成功',
         type: 'success'
       })
     },

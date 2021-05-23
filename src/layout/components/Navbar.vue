@@ -20,7 +20,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img src="../../../public/avatar.jpg" class="user-avatar">
+          <img src="../../../public/avatar2.jpg" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -28,10 +28,10 @@
             <el-dropdown-item>Profile</el-dropdown-item>
           </router-link>-->
           <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
+            <el-dropdown-item>运行报表</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Log Out</span>
+            <span style="display:block;" @click="logout">退出系统</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

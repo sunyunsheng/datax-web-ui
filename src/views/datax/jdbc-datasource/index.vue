@@ -30,17 +30,17 @@
       <!-- <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">{{ scope.$index }}</template>
       </el-table-column> -->
-      <el-table-column label="数据源分组" width="200" align="center">
+      <el-table-column label="数据源分组" width="300" align="center">
         <template slot-scope="scope">{{ scope.row.datasourceGroup }}
         </template>
       </el-table-column>
-      <el-table-column label="数据源名称" width="150" align="center">
+      <el-table-column label="数据源名称" width="500" align="center">
         <template slot-scope="scope">{{ scope.row.datasourceName }}</template>
       </el-table-column>
       <el-table-column label="数据源类型" width="150" align="center">
         <template slot-scope="scope">{{ scope.row.type }}</template>
       </el-table-column>
-      <el-table-column label="连接参数" align="center" width="120">
+      <el-table-column label="连接参数" align="center" width="220">
         <template slot-scope="scope">
           <el-popover
             placement="bottom"
@@ -74,7 +74,7 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px" :before-close="handleClose">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px">
         <el-form-item label="数据源" prop="type">
           <el-select
@@ -201,13 +201,13 @@ export default {
         create: 'Create'
       },
       rules: {
-        datasourceName: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        type: [{ required: true, message: 'this is required', trigger: 'change' }],
-        'connectionParams.user': [{ required: true, message: 'this is required', trigger: 'blur' }],
-        'connectionParams.password': [{ required: true, message: 'this is required', trigger: 'blur' }],
-        'connectionParams.jdbcUrl': [{ required: true, message: 'this is required', trigger: 'blur' }],
-        'connectionParams.zkAddress': [{ required: true, message: 'this is required', trigger: 'blur' }],
-        'connectionParams.database': [{ required: true, message: 'this is required', trigger: 'blur' }]
+        datasourceName: [{ required: true, message: '数据源名称必填', trigger: 'blur' }],
+        type: [{ required: true, message: '数据源类型必填', trigger: 'change' }],
+        'connectionParams.user': [{ required: true, message: '用户名必填', trigger: 'blur' }],
+        'connectionParams.password': [{ required: true, message: '密码必填', trigger: 'blur' }],
+        'connectionParams.jdbcUrl': [{ required: true, message: 'JDBC连接地址串必填', trigger: 'blur' }],
+        'connectionParams.zkAddress': [{ required: true, message: 'zookeeper地址必填', trigger: 'blur' }],
+        'connectionParams.database': [{ required: true, message: '数据库名称必填', trigger: 'blur' }]
       },
       temp: {
         id: undefined,
@@ -300,6 +300,13 @@ export default {
         comments: ''
       }
     },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
@@ -320,7 +327,7 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
+              title: '系统提示',
               message: '创建数据源成功',
               type: 'success',
               duration: 2000
@@ -347,7 +354,7 @@ export default {
               })
             } else {
               this.$notify({
-                title: 'Success',
+                title: '系统提示',
                 message: '测试连接数据库成功',
                 type: 'success',
                 duration: 2000
@@ -381,7 +388,7 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
+              title: '系统提示',
               message: '更改数据源成功',
               type: 'success',
               duration: 2000
@@ -409,7 +416,7 @@ export default {
       datasourceApi.deleted({ idList: row.id }).then(response => {
         this.fetchData()
         this.$notify({
-          title: 'Success',
+          title: '系统提示',
           message: '删除数据源成功',
           type: 'success',
           duration: 2000

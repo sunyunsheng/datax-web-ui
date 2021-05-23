@@ -411,8 +411,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '系统提示',
+              message: '创建任务模板成功',
               type: 'success',
               duration: 2000
             })
@@ -473,8 +473,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '系统提示',
+              message: '修改任务模板成功',
               type: 'success',
               duration: 2000
             })
@@ -491,8 +491,8 @@ export default {
         jobTemp.removeJob(row.id).then(response => {
           this.fetchData()
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: '系统提示',
+            message: '删除任务模板成功',
             type: 'success',
             duration: 2000
           })

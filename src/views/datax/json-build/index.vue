@@ -190,8 +190,8 @@ export default {
           this.temp.jobJson = this.configJson
           job.createJob(this.temp).then(() => {
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '系统提示',
+              message: '创建成功',
               type: 'success',
               duration: 2000
             })
@@ -282,7 +282,7 @@ export default {
     handleCopy(text, event) {
       clip(this.configJson, event)
       this.$message({
-        message: 'copy success',
+        message: '复制成功',
         type: 'success'
       })
     },

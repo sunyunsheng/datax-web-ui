@@ -270,8 +270,8 @@ export default {
         this.fetchData()
         this.dialogFormVisible = false
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
+          title: '系统提示',
+          message: '删除日志成功',
           type: 'success',
           duration: 2000
         })
@@ -316,8 +316,8 @@ export default {
         this.fetchData()
         this.dialogFormVisible = false
         this.$notify({
-          title: 'Success',
-          message: 'Kill Successfully',
+          title: '系统提示',
+          message: '杀掉任务进程成功',
           type: 'success',
           duration: 2000
         })

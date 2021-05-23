@@ -407,13 +407,13 @@ export default {
   data() {
     const validateIncParam = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('Increment parameters is required'))
+        callback(new Error('增量参数必填'))
       }
       callback()
     }
     const validatePartitionParam = (rule, value, callback) => {
       if (!this.partitionField) {
-        callback(new Error('Partition parameters is required'))
+        callback(new Error('分区参数必填'))
       }
       callback()
     }
@@ -441,15 +441,15 @@ export default {
         create: 'Create'
       },
       rules: {
-        jobGroup: [{ required: true, message: 'jobGroup is required', trigger: 'change' }],
-        executorRouteStrategy: [{ required: true, message: 'executorRouteStrategy is required', trigger: 'change' }],
-        executorBlockStrategy: [{ required: true, message: 'executorBlockStrategy is required', trigger: 'change' }],
-        glueType: [{ required: true, message: 'jobType is required', trigger: 'change' }],
-        executorHandler: [{ required: true, message: 'executorHandler is required', trigger: 'change' }],
-        projectId: [{ required: true, message: 'projectId is required', trigger: 'change' }],
-        jobDesc: [{ required: true, message: 'jobDesc is required', trigger: 'blur' }],
+        jobGroup: [{ required: true, message: '执行器必填', trigger: 'change' }],
+        executorRouteStrategy: [{ required: true, message: '执行器路由策略必填', trigger: 'change' }],
+        executorBlockStrategy: [{ required: true, message: '阻塞处理策略必填', trigger: 'change' }],
+        glueType: [{ required: true, message: '任务类型必填', trigger: 'change' }],
+        executorHandler: [{ required: true, message: '执行器处理器必填', trigger: 'change' }],
+        projectId: [{ required: true, message: '所属项目必填', trigger: 'change' }],
+        jobDesc: [{ required: true, message: '任务名称必填', trigger: 'blur' }],
         jobProject: [{ required: true, message: 'jobProject is required', trigger: 'blur' }],
-        jobCron: [{ required: true, message: 'jobCron is required', trigger: 'blur' }],
+        jobCron: [{ required: true, message: '任务执行时间表达式必填', trigger: 'blur' }],
         incStartId: [{ trigger: 'blur', validator: validateIncParam }],
         replaceParam: [{ trigger: 'blur', validator: validateIncParam }],
         primaryKey: [{ trigger: 'blur', validator: validateIncParam }],
@@ -528,10 +528,10 @@ export default {
       incrementTypes: [
         { value: 0, label: '无' },
         { value: 1, label: '主键自增' },
-        { value: 2, label: '时间自增' },
-        { value: 3, label: 'HIVE分区' },
+        { value: 2, label: '时间自增' }
+       /* { value: 3, label: 'HIVE分区' },
         { value: 4, label: 'HIVE分区自增' },
-        { value: 5, label: 'MongoDB主键增量' }
+        { value: 5, label: 'MongoDB主键增量' }*/
 
       ],
       triggerNextTimes: '',
@@ -635,7 +635,7 @@ export default {
     createData() {
       if ((this.temp.glueType === 'DATAX' || this.temp.glueType === 'JAVA_BEAN') && !isJSON(this.jobJson)) {
         this.$notify({
-          title: 'Fail',
+          title: '系统提示',
           message: 'json格式错误',
           type: 'error',
           duration: 2000
@@ -659,8 +659,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '系统提示',
+              message: '创建任务成功',
               type: 'success',
               duration: 2000
             })
@@ -711,7 +711,7 @@ export default {
       this.temp.jobJson = typeof (this.jobJson) !== 'string' ? JSON.stringify(this.jobJson) : this.jobJson
       if ((this.temp.glueType === 'DATAX' || this.temp.glueType === 'JAVA_BEAN') && !isJSON(this.temp.jobJson)) {
         this.$notify({
-          title: 'Fail',
+          title: '系统提示',
           message: 'json格式错误',
           type: 'error',
           duration: 2000
@@ -734,8 +734,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '系统提示',
+              message: '修改任务成功',
               type: 'success',
               duration: 2000
             })
@@ -752,8 +752,8 @@ export default {
         job.removeJob(row.id).then(response => {
           this.fetchData()
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: '系统提示',
+            message: '删除任务成功',
             type: 'success',
             duration: 2000
           })
@@ -773,8 +773,8 @@ export default {
         param.executorParam = row.executorParam
         job.triggerJob(param).then(response => {
           this.$notify({
-            title: 'Success',
-            message: 'Execute Successfully',
+            title: '系统提示',
+            message: '任务调度执行成功',
             type: 'success',
             duration: 2000
           })
@@ -788,8 +788,8 @@ export default {
     handlerStart(row) {
       job.startJob(row.id).then(response => {
         this.$notify({
-          title: 'Success',
-          message: 'Start Successfully',
+          title: '系统提示',
+          message: '启动任务成功',
           type: 'success',
           duration: 2000
         })
@@ -798,8 +798,8 @@ export default {
     handlerStop(row) {
       job.stopJob(row.id).then(response => {
         this.$notify({
-          title: 'Success',
-          message: 'Start Successfully',
+          title: '系统提示',
+          message: '停止任务成功',
           type: 'success',
           duration: 2000
         })

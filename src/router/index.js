@@ -260,7 +260,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  toolRouter,
+  // toolRouter,
   { path: '*', redirect: '/404', hidden: true }
 ]
 
