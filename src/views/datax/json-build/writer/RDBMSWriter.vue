@@ -125,10 +125,10 @@ export default {
       },
       readerForm: this.getReaderData(),
       rules: {
-        datasourceId: [{ required: true, message: 'this is required', trigger: 'change' }],
-        tableName: [{ required: true, message: 'this is required', trigger: 'change' }],
-        tableSchema: [{ required: true, message: 'this is required', trigger: 'change' }],
-        writeModeType: [{ required: true, message: 'this is required', trigger: 'change' }]
+        datasourceId: [{ required: true, message: '数据源必填', trigger: 'change' }],
+        tableName: [{ required: true, message: '数据表名必填', trigger: 'change' }],
+        tableSchema: [{ required: true, message: 'Schema必填', trigger: 'change' }],
+        writeModeType: [{ required: true, message: '数据写入模式必填', trigger: 'change' }]
       }
     }
   },
