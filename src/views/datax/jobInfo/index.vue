@@ -529,10 +529,9 @@ export default {
         { value: 0, label: '无' },
         { value: 1, label: '主键自增' },
         { value: 2, label: '时间自增' }
-       /* { value: 3, label: 'HIVE分区' },
-        { value: 4, label: 'HIVE分区自增' },
-        { value: 5, label: 'MongoDB主键增量' }*/
-
+        // { value: 3, label: 'HIVE分区' },
+        // { value: 4, label: 'HIVE分区自增' },
+        // { value: 5, label: 'MongoDB主键增量' }
       ],
       triggerNextTimes: '',
       registerNode: [],
