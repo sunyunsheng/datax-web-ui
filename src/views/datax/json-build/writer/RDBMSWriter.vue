@@ -67,7 +67,6 @@
           filterable
           style="width: 300px;"
           @change="wmChange"
-
         >
           <el-option
             v-for="item in wmList"
@@ -76,7 +75,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-input v-model="writerForm.writeMode" placeholder="writeMode" style="width: 13%" prop="writeMode"  disabled/>
+        <el-input v-model="writerForm.writeMode" placeholder="writeMode" style="width: 13%" prop="writeMode" disabled />
       </el-form-item>
 
     </el-form>

@@ -56,7 +56,7 @@ export default {
       fromTableName: '',
       wTbList: [],
       dataSource: '',
-      needSchema:false,
+      needSchema: false,
       createTableName: '',
       writerForm: {
         datasourceId: undefined,
@@ -95,7 +95,7 @@ export default {
         this.wDsList = records
         this.dataSource = this.wDsList[0].datasource
         this.writerForm.datasourceId = this.wDsList[0].id
-        if (this.dataSource === 'postgresql' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver' || this.dataSource === 'db2'){
+        if (this.dataSource === 'postgresql' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver' || this.dataSource === 'db2') {
           this.needSchema = true
         } else {
           this.needSchema = false

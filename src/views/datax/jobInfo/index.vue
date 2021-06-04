@@ -291,7 +291,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="最后调度成功时间" prop="lastSuccessTriggerTime">
-              <el-input v-model="temp.lastSuccessTriggerTime" placeholder="最后一次调度成功时间" disabled/>
+              <el-input v-model="temp.lastSuccessTriggerTime" placeholder="最后一次调度成功时间" disabled />
             </el-form-item>
           </el-col>
         </el-row>
