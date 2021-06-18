@@ -1,9 +1,7 @@
 <template>
     <div class="login-container">
-        <div class="login-top">
-            <img src="~@/assets/title_img.png" alt="">
-            <!--<span>吉科软数据同步平台\brCTSyncDATA</span>-->
-
+        <div class="login-top" align="center">
+          <img src="~@/assets/title_img.png" alt="">
         </div>
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
                  label-position="left">
@@ -210,17 +208,22 @@
     background-size: 100% 100%;
     font-size: 18px;
     .title-container {
-      color: #ffffff;
+      color: #1890ff;
       font-size: 30px;
       font-weight: 500;
-      margin-bottom: 50px;
+      margin-bottom: 20px;
+      margin-top: 20px;
       text-align: center;
     }
     .login-form {
       position: absolute;
-      width: 480px;
-      right: 10%;
+      background: url(../../assets/login_bg.png) no-repeat;
+      width: 588px;
+      height: 408px;
+      margin-left: -294px;
+      left:50%;
       top: 50%;
+      padding:20px 40px;
       transform: translate(0,-50%);
       .el-form-item {
         margin-bottom: 25px;
@@ -243,12 +246,12 @@
         color: #1697f1;
       }
       .el-input--medium .el-input__inner{
-        height: 68px;
-        line-height: 68px;
+        height: 60px;
+        line-height: 60px;
         padding: 0 55px;
         color: #666666;
-        font-size: 20px;
-        background-color: #fff;
+        font-size: 18px;
+        background-color: #18295d;
         border-radius: 34px;
         border: none;
       }
@@ -301,11 +304,13 @@
     }
     .login-btn{
       width: 100%;
-      height: 68px;
-      line-height: 68px;
+      height: 60px;
+      line-height: 60px;
       padding: 0;
       font-size: 24px;
       border-radius: 34px;
+      background-color: #0c54af;
+      border-color: #0c54af;
      // font-weight: bold;
     }
   }

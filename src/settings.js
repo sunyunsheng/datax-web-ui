@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Datax Web',
+  title: '数据同步平台',
 
   /**
    * @type {boolean} true | false
